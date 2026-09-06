@@ -14,18 +14,24 @@ class student{
         this.m1=m1;
         this.m2=m2;
         this.m3=m3;
-        this.total=m1+m2+m3;
-        this.avg=this.total/3.0;
-        this.res= (this.avg>=40) ? "PASS" : "FAIL";
+        this.calculate();
     }
-}
+    final void calculate(){
+        this.total=this.m1+this.m2+this.m3;
+        this.avg=this.total/3.0;
+        this.res=(this.avg>=40)? "PASS" : "FAIL";
+    }
+
+    void display(){
+        System.out.println("Student MarkList");
+        System.out.println("ID : "+id+"\n"+"Name : "+name+"\n"+"Tamil : "+m1+"\n"+"English : "+m2+"\n"+"Maths : "+m3+"\n"+"Total : "+total+"\n"+"Average : "+avg+"\n"+"Result : "+res);
+    }
+ }
 
 public class studmapp{
     
-    void display(student s){
-        System.out.println("Student MarkList");
-        System.out.println("ID : "+s.id+"\n"+"Name : "+s.name+"\n"+"Tamil : "+s.m1+"\n"+"English : "+s.m2+"\n"+"Maths : "+s.m3+"\n"+"Total : "+s.total+"\n"+"Average : "+s.avg+"\n"+"Result : "+s.res);
-      }
+    
+
 
       void Marklistdisplay(HashMap<Integer,student> studmap){
         System.out.printf("%-5s %-10s %-5s %-5s %-5s %-5s %-5s %-5s\n",
@@ -58,7 +64,7 @@ public class studmapp{
             System.out.println("1. New Student");
             System.out.println("2. Display Records");
             System.out.println("3. Update Record");
-            System.out.println("Remove Record");
+            System.out.println("4. Remove Record");
             System.out.println("5. Exit");
             System.out.println("Enter your option : ");
             int choice=Integer.parseInt(br.readLine());
@@ -80,7 +86,7 @@ public class studmapp{
                             System.out.println("Maths Marks : ");
                             int mat=Integer.parseInt(br.readLine());
                             studmap.put(id,new student(id,name,tam,eng,mat));
-                            studobj.display(studmap.get(id));
+                            studmap.get(id).display();
                             System.out.println("Student Added successfully");
                             System.out.println("Do you want to add More Student? (y/n) : ");
                             opt=br.readLine().charAt(0);
@@ -110,7 +116,8 @@ public class studmapp{
                                             System.out.println("Enter Name to update : ");
                                             String newname=br.readLine();
                                             updatestud.name=newname;
-                                            studobj.display(updatestud);
+                                            studmap.put(updateid,updatestud);
+                                            updatestud.display();
                                             break;
 
                                         case 2:
@@ -128,28 +135,25 @@ public class studmapp{
                                                         System.out.println("Enter New Tamil Marks : ");
                                                         int newtam=Integer.parseInt(br.readLine());
                                                         updatestud.m1=newtam;
-                                                        updatestud.total=newtam+updatestud.m2+updatestud.m3;
-                                                        updatestud.avg=updatestud.total/3.0;
-                                                        updatestud.res=(updatestud.avg>40)? "PASS" : "FAIL";
-                                                        studobj.display(updatestud);
+                                                        updatestud.calculate();
+                                                        studmap.put(updateid,updatestud);
+                                                        updatestud.display();
                                                         break;
                                                     case 2:
                                                         System.out.println("Enter New English Marks : ");
                                                         int neweng=Integer.parseInt(br.readLine());
                                                         updatestud.m2=neweng;
-                                                        updatestud.total=updatestud.m1+neweng+updatestud.m3;
-                                                        updatestud.avg=updatestud.total/3.0;
-                                                        updatestud.res=(updatestud.avg>40)? "PASS" : "FAIL";
-                                                        studobj.display(updatestud);
+                                                        updatestud.calculate();
+                                                        studmap.put(updateid,updatestud);
+                                                        updatestud.display();
                                                         break;
                                                     case 3:
                                                         System.out.println("Enter New Maths Marks : ");
                                                         int newmat=Integer.parseInt(br.readLine());
                                                         updatestud.m3=newmat;
-                                                        updatestud.total=updatestud.m1+updatestud.m2+newmat;
-                                                        updatestud.avg=updatestud.total/3.0;
-                                                        updatestud.res=(updatestud.avg>40)? "PASS" : "FAIL";
-                                                        studobj.display(updatestud);
+                                                        updatestud.calculate();
+                                                        studmap.put(updateid,updatestud);
+                                                        updatestud.display();
                                                         break;
                                                     case 4:
                                                         System.out.println("Exit...");
@@ -185,9 +189,10 @@ public class studmapp{
                             int deleteid=Integer.parseInt(br.readLine());
                             if(studmap.containsKey(deleteid)){
                                 student delstud=studmap.get(deleteid);
+                                delstud.display();
                                 studmap.remove(deleteid);
                                 System.out.println("Student Record Deleted");
-                                studobj.display(delstud);
+                                studobj.Marklistdisplay(studmap);
                             }
                             else{
                                 System.out.println("Student Not Found : ");
